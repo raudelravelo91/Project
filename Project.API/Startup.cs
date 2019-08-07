@@ -29,7 +29,7 @@ namespace Project.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connectionString = @"Server=(localdb)\mssqllocaldb;Database=ProjectDB;Trusted_Connection=True;";
+            string connectionString = Configuration.GetConnectionString("projectDBConnectionString");
             services.AddDbContext<ProjectContext>(o => o.UseSqlServer(connectionString));
         }
 
