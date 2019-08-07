@@ -14,8 +14,8 @@ namespace Project.Data
             Database.Migrate();
         }
         public DbSet<Question> Questions { get; set; }
-        
-
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserAnswer> UserAnswers { get; set; }
 
     }
 }
