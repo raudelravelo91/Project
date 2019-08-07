@@ -11,7 +11,7 @@ namespace Project.Data
         public ProjectContext(DbContextOptions<ProjectContext> options)
             :base(options)
         {
-            Database.EnsureCreated();
+            Database.Migrate();
         }
         public DbSet<Question> Questions { get; set; }
         
