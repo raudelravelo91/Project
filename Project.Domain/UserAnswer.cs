@@ -9,19 +9,25 @@ namespace Project.Domain
     public class UserAnswer
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public bool Correct { get; set; }
+
+        public DateTime DateTime { get; set; }
+
+        public int ConfidenceLevel { get; set; }
+
+        public int ImportanceLevel { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }
 
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey("QuestionId")]
         public Question Question { get; set; }
 
-        public Guid QuestionId { get; set; }
+        public int QuestionId { get; set; }
         
     }
 }

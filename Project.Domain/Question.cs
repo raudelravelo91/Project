@@ -8,8 +8,12 @@ namespace Project.Domain
     public class Question
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Text { get; set; }
+
+        public List<string> Answers { get; set; }
+
+        public List<string> Choices { get; set; }
     }
 }
