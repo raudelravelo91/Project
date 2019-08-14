@@ -39,7 +39,29 @@ namespace Project.API.Controllers
                 return NotFound();
             }
 
-            return user;
+            return Ok(user);
+        }
+
+        // GET: api/Users/5
+        [HttpGet("{id}/answers")]
+        public async Task<ActionResult<UserAnswer>> GetUserAnswers(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var answers = await _context.UserAnswers.Where(u => u.UserId.Equals(id)).ToListAsync();
+
+            if (answers == null)
+            {
+                return NotFound();
+            }
+
+
+            return Ok(answers);
         }
 
         // PUT: api/Users/5
