@@ -10,8 +10,8 @@ using Project.Data;
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20190807190014_ProjectDBAddUserAndUserAnswer")]
-    partial class ProjectDBAddUserAndUserAnswer
+    [Migration("20190814001949_First Migration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,8 +23,15 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Domain.Question", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AnswersAsString")
+                        .IsRequired();
+
+                    b.Property<string>("ChoicessAsString")
+                        .IsRequired();
 
                     b.Property<string>("Text");
 
@@ -35,8 +42,9 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Domain.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Username");
 
@@ -47,14 +55,21 @@ namespace Project.Data.Migrations
 
             modelBuilder.Entity("Project.Domain.UserAnswer", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ConfidenceLevel");
 
                     b.Property<bool>("Correct");
 
-                    b.Property<Guid>("QuestionId");
+                    b.Property<DateTime>("DateTime");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<int>("ImportanceLevel");
+
+                    b.Property<int>("QuestionId");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 

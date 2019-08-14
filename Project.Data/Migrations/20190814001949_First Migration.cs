@@ -1,17 +1,34 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project.Data.Migrations
 {
-    public partial class ProjectDBAddUserAndUserAnswer : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(nullable: true),
+                    AnswersAsString = table.Column<string>(nullable: false),
+                    ChoicessAsString = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -23,10 +40,14 @@ namespace Project.Data.Migrations
                 name: "UserAnswers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Correct = table.Column<bool>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    QuestionId = table.Column<Guid>(nullable: false)
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    ConfidenceLevel = table.Column<int>(nullable: false),
+                    ImportanceLevel = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    QuestionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,6 +81,9 @@ namespace Project.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "UserAnswers");
+
+            migrationBuilder.DropTable(
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Users");
