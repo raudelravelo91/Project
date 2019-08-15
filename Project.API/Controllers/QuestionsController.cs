@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project.API.Models;
 using Project.Data;
 using Project.Domain;
 
@@ -25,7 +26,9 @@ namespace Project.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
-            return await _context.Questions.ToListAsync();
+            var questions = await _context.Questions.ToListAsync();
+            
+            return Ok(questions);
         }
 
         // GET: api/Questions/5
@@ -74,12 +77,18 @@ namespace Project.API.Controllers
 
         // POST: api/Questions
         [HttpPost]
-        public async Task<ActionResult<Question>> PostQuestion(Question question)
+        public async Task<ActionResult<Question>> PostQuestion([FromBody]QuestionForCreationDto question)
         {
-            _context.Questions.Add(question);
+            if (question == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var savedQuestion = _context.Questions.Add(new Question {Text=question.Text, Answers = question.Answers, Choices = question.Choices });
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = question.Id }, question);
+            return CreatedAtAction("GetQuestion", new { id = savedQuestion.Entity.Id }, question);
         }
 
         // DELETE: api/Questions/5
