@@ -10,8 +10,8 @@ using Project.Data;
 namespace Project.Data.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20190814001949_First Migration")]
-    partial class FirstMigration
+    [Migration("20190817040231_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,11 @@ namespace Project.Data.Migrations
 
                     b.Property<string>("Text");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Questions");
                 });
@@ -78,6 +82,14 @@ namespace Project.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserAnswers");
+                });
+
+            modelBuilder.Entity("Project.Domain.Question", b =>
+                {
+                    b.HasOne("Project.Domain.User")
+                        .WithMany("UserQuestions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Project.Domain.UserAnswer", b =>

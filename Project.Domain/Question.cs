@@ -15,6 +15,9 @@ namespace Project.Domain
 
         public string Text { get; set; }
 
+        [Required]
+        public int UserId { get; set; }
+
         [NotMapped]
         public List<string> Answers
         {

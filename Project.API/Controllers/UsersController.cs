@@ -42,8 +42,8 @@ namespace Project.API.Controllers
             return Ok(user);
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}/answers")]
+        // GET: api/Users/answers/5
+        [HttpGet("answers/{id}")]
         public async Task<ActionResult<UserAnswer>> GetUserAnswers(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -59,7 +59,6 @@ namespace Project.API.Controllers
             {
                 return NotFound();
             }
-
 
             return Ok(answers);
         }
