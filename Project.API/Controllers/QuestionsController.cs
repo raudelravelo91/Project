@@ -80,15 +80,32 @@ namespace Project.API.Controllers
         public async Task<ActionResult<Question>> PostQuestion([FromBody]QuestionForCreationDto question)
         {
             if (question == null)
+            {
                 return BadRequest();
+            }
 
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
-            var savedQuestion = _context.Questions.Add(new Question {Text=question.Text, Answers = question.Answers, Choices = question.Choices });
+            var user = await _context.Users.FindAsync(question.UserId);
+            if (user == null)
+            {
+                BadRequest();
+            }
+
+            var questionToBeSaved = _context.Questions.Add(
+                new Question {
+                    UserId = question.UserId,
+                    Text =question.Text,
+                    Answers = question.Answers,
+                    Choices = question.Choices
+                });
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetQuestion", new { id = savedQuestion.Entity.Id }, question);
+            return CreatedAtAction("GetQuestion", new { id = questionToBeSaved.Entity.Id }, question);
         }
 
         // DELETE: api/Questions/5

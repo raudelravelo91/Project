@@ -11,6 +11,10 @@ namespace Project.API.Models
     {
         [BindProperty]
         [Required]
+        public int UserId { get; set; }
+
+        [BindProperty]
+        [Required]
         [MinLength(1)]
         [MaxLength(500)]
         public string Text { get; set; }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project.API.Models;
 using Project.Data;
 using Project.Domain;
 
@@ -95,12 +96,33 @@ namespace Project.API.Controllers
 
         // POST: api/Users
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser(UserForCreationDto user)
         {
-            _context.Users.Add(user);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var usernameInUse = _context.Users.FirstOrDefault(u => u.Username.Equals(user.Username));
+            if (usernameInUse != null)
+            {
+                return BadRequest("username in use");
+            }
+
+            var userToBeSaved = _context.Users.Add(
+                new User
+                {
+                    Username = user.Username
+                });
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetUser", new { id = userToBeSaved.Entity.Id }, user);
         }
 
         // DELETE: api/Users/5
